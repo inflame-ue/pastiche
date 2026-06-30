@@ -6,6 +6,10 @@ import (
 
 type GoFormatter struct{}
 
+func NewGoFormatter() *GoFormatter {
+	return &GoFormatter{}
+}
+
 func (gf *GoFormatter) Name() string {
 	return "go"
 }
