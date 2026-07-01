@@ -1,16 +1,24 @@
 package pipeline
 
+import (
+	"context"
+	"log"
+	"sync"
+
+	"github.com/inflame-ue/pastiche/internal/formatter"
+	"golang.design/x/clipboard"
+)
+
 type Pipeline struct {
-	rawSource       chan []byte
-	formattedSource chan []byte
-	done            chan any
+	rawSource chan []byte
+	wg        sync.WaitGroup
+	cancel    context.CancelFunc
 }
 
 func NewPipeline() *Pipeline {
 	return &Pipeline{
-		rawSource:       make(chan []byte),
-		formattedSource: make(chan []byte),
-		done:            make(chan any),
+		rawSource: make(chan []byte),
+		wg:        sync.WaitGroup{},
 	}
 }
 
@@ -18,4 +26,25 @@ func (p *Pipeline) Submit(src []byte) {
 	p.rawSource <- src
 }
 
+func (p *Pipeline) Run(ctx context.Context, registry formatter.FormatterRegistry) {
+	ctx, p.cancel = context.WithCancel(ctx)
+	for {
+		select {
+		case src := <-p.rawSource:
+			p.wg.Add(1)
+			out, err := registry.Format(src)
+			if err != nil {
+				log.Print(err)
+			}
+			clipboard.Write(clipboard.FmtText, out)
+			p.wg.Done()
+		case _ = <-ctx.Done():
+			return
+		}
+	}
+}
 
+func (p *Pipeline) Stop() {
+	p.cancel()
+	p.wg.Wait()
+}
