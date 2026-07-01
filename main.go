@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	// this is fine, because we don't steal error agency from the client
+	// this is fine, because we don't steal error agency from the caller
 	err := clipboard.Init()
 	if err != nil {
 		log.Fatal(err)
