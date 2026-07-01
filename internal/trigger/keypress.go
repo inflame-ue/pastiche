@@ -9,23 +9,25 @@ import (
 	"golang.design/x/clipboard"
 )
 
-func FormatOnKeyPress(fmtRegistry formatter.FormatterRegistry) error {
+func FormatOnKeyPress(fmtRegistry *formatter.FormatterRegistry, fmtKeyCode keys.KeyCode) error {
 	return keyboard.Listen(func(key keys.Key) (stop bool, err error) {
 		if key.Code == keys.CtrlC {
-			log.Println("stopping the keyboard listener...")
+			log.Println("gracefully stopping the keyboard listener...")
 			return true, nil
 		}
 
-		if key.Code != keys.CtrlI {
+		if key.Code != fmtKeyCode {
+			log.Printf("invalid key code, expecting: %d\n", fmtKeyCode)
 			return false, nil
 		}
 
-		log.Println("formatting the code in the clipboard...")
+		log.Println("formatting the source code in the clipboard...")
 
 		src := clipboard.Read(clipboard.FmtText)
 		formatted, err := fmtRegistry.Format(src)
 		if err != nil {
-			return true, err
+			log.Println(err)
+			return false, nil
 		}
 
 		clipboard.Write(clipboard.FmtText, formatted)

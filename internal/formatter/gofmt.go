@@ -6,14 +6,14 @@ import (
 
 type GoFormatter struct{}
 
-func NewGoFormatter() *GoFormatter {
-	return &GoFormatter{}
+func NewGoFormatter() GoFormatter {
+	return GoFormatter{}
 }
 
-func (gf *GoFormatter) Name() string {
+func (gf GoFormatter) Name() string {
 	return "go"
 }
 
-func (gf *GoFormatter) Format(src []byte) ([]byte, error) {
+func (gf GoFormatter) Format(src []byte) ([]byte, error) {
 	return format.Source(src)
 }
