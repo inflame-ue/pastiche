@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 
 	"atomicgo.dev/keyboard/keys"
@@ -22,8 +23,10 @@ func main() {
 	fmtRegistry := formatter.NewFormatterRegistry()
 	fmtRegistry.Register(formatter.NewGoFormatter())
 	fmtPipeline := pipeline.NewPipeline()
+	defer fmtPipeline.Stop()
 
 	log.Println("listening for the code format directive on Ctrl-I keypress")
+	go fmtPipeline.Run(context.Background(), fmtRegistry)
 	err := trigger.FormatOnKeyPress(fmtPipeline, keys.CtrlI)
 	if err != nil {
 		log.Fatal(err)

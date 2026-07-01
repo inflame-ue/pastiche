@@ -26,7 +26,7 @@ func (p *Pipeline) Submit(src []byte) {
 	p.rawSource <- src
 }
 
-func (p *Pipeline) Run(ctx context.Context, registry formatter.FormatterRegistry) {
+func (p *Pipeline) Run(ctx context.Context, registry *formatter.FormatterRegistry) {
 	ctx, p.cancel = context.WithCancel(ctx)
 	for {
 		select {
@@ -35,10 +35,12 @@ func (p *Pipeline) Run(ctx context.Context, registry formatter.FormatterRegistry
 			out, err := registry.Format(src)
 			if err != nil {
 				log.Print(err)
+				continue
 			}
+			log.Println("writing formatted source back to the clipboard...")
 			clipboard.Write(clipboard.FmtText, out)
 			p.wg.Done()
-		case _ = <-ctx.Done():
+		case <-ctx.Done():
 			return
 		}
 	}
