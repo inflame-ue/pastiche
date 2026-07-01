@@ -5,33 +5,24 @@ import (
 
 	"atomicgo.dev/keyboard"
 	"atomicgo.dev/keyboard/keys"
-	"github.com/inflame-ue/pastiche/internal/formatter"
+	"github.com/inflame-ue/pastiche/internal/pipeline"
 	"golang.design/x/clipboard"
 )
 
-func FormatOnKeyPress(fmtRegistry *formatter.FormatterRegistry, fmtKeyCode keys.KeyCode) error {
+func FormatOnKeyPress(p *pipeline.Pipeline, keyCode keys.KeyCode) error {
 	return keyboard.Listen(func(key keys.Key) (stop bool, err error) {
 		if key.Code == keys.CtrlC {
-			log.Println("gracefully stopping the keyboard listener...")
+			log.Println("stopping the keyboard listener...")
 			return true, nil
 		}
 
-		if key.Code != fmtKeyCode {
-			log.Printf("invalid key code, expecting: %d\n", fmtKeyCode)
+		if key.Code != keyCode {
+			log.Printf("invalid key code, expecting: %d\n", keyCode)
 			return false, nil
 		}
 
-		log.Println("formatting the source code in the clipboard...")
-
-		src := clipboard.Read(clipboard.FmtText)
-		formatted, err := fmtRegistry.Format(src)
-		if err != nil {
-			log.Println(err)
-			return false, nil
-		}
-
-		clipboard.Write(clipboard.FmtText, formatted)
-
+		log.Println("sending the source code in the clipboard to the formatting pipeline...")
+		p.Submit(clipboard.Read(clipboard.FmtText))
 		return false, nil
 	})
 }
