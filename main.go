@@ -6,6 +6,7 @@ import (
 
 	"atomicgo.dev/keyboard/keys"
 	"github.com/inflame-ue/pastiche/internal/formatter"
+	"github.com/inflame-ue/pastiche/internal/formatter/gofmt"
 	"github.com/inflame-ue/pastiche/internal/pipeline"
 	"github.com/inflame-ue/pastiche/internal/trigger"
 	"golang.design/x/clipboard"
@@ -21,7 +22,7 @@ func init() {
 
 func main() {
 	fmtRegistry := formatter.NewFormatterRegistry()
-	fmtRegistry.Register(formatter.NewGoFormatter())
+	fmtRegistry.Register(gofmt.NewGoFormatter())
 	fmtPipeline := pipeline.NewPipeline()
 	defer fmtPipeline.Stop()
 
