@@ -30,7 +30,7 @@ func main() {
 
 	log.Println("listening for the code format directive on Ctrl-I keypress")
 	go fmtPipeline.Run(context.Background(), fmtRegistry)
-	err := trigger.FormatOnKeyPress(fmtPipeline, keys.CtrlI)
+	err = trigger.FormatOnKeyPress(fmtPipeline, keys.CtrlI)
 	if err != nil {
 		log.Fatal(err)
 	}
