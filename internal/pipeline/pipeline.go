@@ -35,6 +35,7 @@ func (p *Pipeline) Run(ctx context.Context, registry *formatter.FormatterRegistr
 			out, err := registry.Format(src)
 			if err != nil {
 				log.Print(err)
+				p.wg.Done()
 				continue
 			}
 			log.Println("writing formatted source back to the clipboard...")

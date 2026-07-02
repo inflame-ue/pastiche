@@ -8,6 +8,7 @@ import (
 	"github.com/inflame-ue/pastiche/internal/formatter"
 	"github.com/inflame-ue/pastiche/internal/formatter/gofmt"
 	"github.com/inflame-ue/pastiche/internal/formatter/pythonfmt"
+	"github.com/inflame-ue/pastiche/internal/formatter/rustfmt"
 	"github.com/inflame-ue/pastiche/internal/pipeline"
 	"github.com/inflame-ue/pastiche/internal/trigger"
 	"golang.design/x/clipboard"
@@ -25,6 +26,7 @@ func main() {
 	fmtRegistry := formatter.NewFormatterRegistry()
 	fmtRegistry.Register(gofmt.NewGoFormatter())
 	fmtRegistry.Register(pythonfmt.DefaultPythonFormatter)
+	fmtRegistry.Register(rustfmt.DefaultRustFormatter)
 
 	fmtPipeline := pipeline.NewPipeline()
 	defer fmtPipeline.Stop()
