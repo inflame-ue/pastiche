@@ -1,31 +1,32 @@
 package gofmt
 
-import (
-	"go/format"
-	"testing"
-)
+import "testing"
 
-func TestGoFormatter(t *testing.T) {
+func TestGoFormat(t *testing.T) {
 	t.Parallel()
 
 	formatter := NewGoFormatter()
 
-	src := `package main
-func main() {
-x:=1
-y:=2
-_=x+y
-}`
-	expected, err := format.Source([]byte(src))
+	src := []byte("func main(){\na:=1\nb:=2\n_=a+b}")
+	got, err := formatter.Format(src)
 	if err != nil {
-		t.Fatalf("could not format the expect string: %v", err)
-	}
-	got, err := formatter.Format([]byte(src))
-	if err != nil {
-		t.Fatalf("could not format the got string: %v", err)
+		t.Fatalf("could not format the source: %v", err)
 	}
 
-	if string(expected) != string(got) {
-		t.Errorf("expected %s, got %s", expected, got)
+	expected := "func main() {\n	a := 1\n	b := 2\n	_ = a + b\n}"
+	if string(got) != expected {
+		t.Errorf("expected %q, got %q", expected, string(got))
+	}
+}
+
+func TestInvalidGoFormat(t *testing.T) {
+	t.Parallel()
+
+	formatter := NewGoFormatter()
+
+	src := []byte("func main()\na:=1\nb:=2\n_=a+b}")
+	_, err := formatter.Format(src)
+	if err == nil {
+		t.Error("expected an error for invalid Go syntax")
 	}
 }
