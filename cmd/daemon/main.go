@@ -14,15 +14,12 @@ import (
 	"golang.design/x/clipboard"
 )
 
-func init() {
-	// this is fine, because we don't steal error agency from the caller
+func main() {
 	err := clipboard.Init()
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func main() {
+	
 	fmtRegistry := formatter.NewFormatterRegistry()
 	fmtRegistry.Register(gofmt.NewGoFormatter())
 	fmtRegistry.Register(pythonfmt.DefaultPythonFormatter)
