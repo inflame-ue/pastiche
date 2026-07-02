@@ -24,7 +24,7 @@ func init() {
 func main() {
 	fmtRegistry := formatter.NewFormatterRegistry()
 	fmtRegistry.Register(gofmt.NewGoFormatter())
-	fmtRegistry.Register(pythonfmt.NewPythonFormatter())
+	fmtRegistry.Register(pythonfmt.DefaultPythonFormatter)
 
 	fmtPipeline := pipeline.NewPipeline()
 	defer fmtPipeline.Stop()

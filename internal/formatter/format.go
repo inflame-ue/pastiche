@@ -1,6 +1,9 @@
 package formatter
 
-import "errors"
+import (
+	"errors"
+	"log"
+)
 
 type Formatter interface {
 	Name() string
@@ -27,6 +30,7 @@ func (fr *FormatterRegistry) Format(src []byte) ([]byte, error) {
 		if err == nil {
 			return out, nil
 		}
+		log.Print(err)
 	}
 	return nil, errors.New("no formatter could parse the source")
 }
