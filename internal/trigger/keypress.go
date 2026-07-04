@@ -17,7 +17,6 @@ func FormatOnKeyPress(p *pipeline.Pipeline, keyCode keys.KeyCode) error {
 		}
 
 		if key.Code != keyCode {
-			log.Printf("invalid key code, expecting: %d\n", keyCode)
 			return false, nil
 		}
 

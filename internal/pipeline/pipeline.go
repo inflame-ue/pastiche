@@ -19,6 +19,7 @@ func NewPipeline() *Pipeline {
 	return &Pipeline{
 		rawSource: make(chan []byte),
 		wg:        sync.WaitGroup{},
+		cancel:    func() {},
 	}
 }
 
