@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"atomicgo.dev/keyboard/keys"
 	"github.com/inflame-ue/pastiche/internal/config"
@@ -25,10 +28,19 @@ func main() {
 
 	fmtRegistry := formatter.NewFormatterRegistry()
 	fmtRegistry.Select(conf.Formatters.Order)
-	
+
 	fmtPipeline := pipeline.NewPipeline()
 	ctx := context.Background()
 	go fmtPipeline.Run(ctx, fmtRegistry)
+
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-c
+		log.Print("cleaning up resources and exiting...")
+		fmtPipeline.Stop()
+		os.Exit(0)
+	}()
 
 	log.Printf("starting the daemon...")
 	log.Printf("daemon mode: %s", conf.Trigger.Mode)
