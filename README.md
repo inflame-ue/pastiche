@@ -4,7 +4,7 @@ Clipboard Daemon for Formatting Code Written in Go
 ## Motivation
 
 
-## Quickstart
+## Quick Start
 
 
 ## Usage
