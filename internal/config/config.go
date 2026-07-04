@@ -66,7 +66,7 @@ func Save(conf *Config) error {
 		return fmt.Errorf("creating conf directory: %w", err)
 	}
 
-	file, err := os.Create(filepath.Base(confPath))
+	file, err := os.Create(confPath)
 	if err != nil {
 		return fmt.Errorf("opening conf file: %w", err)
 	}
