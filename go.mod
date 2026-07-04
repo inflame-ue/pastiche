@@ -4,6 +4,7 @@ go 1.26.3
 
 require (
 	atomicgo.dev/keyboard v0.2.10
+	github.com/BurntSushi/toml v1.6.0
 	golang.design/x/clipboard v0.8.0
 )
 

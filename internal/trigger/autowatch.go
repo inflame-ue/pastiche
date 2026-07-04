@@ -8,7 +8,7 @@ import (
 	"golang.design/x/clipboard"
 )
 
-func hereustic(src []byte, hereusticThreshold int) bool {
+func heuristic(src []byte, heuristicThreshold int) bool {
 	var hereusticHits int
 
 	if bytes.Count(src, []byte("\n")) >= 3 {
@@ -31,10 +31,10 @@ func hereustic(src []byte, hereusticThreshold int) bool {
 		hereusticHits++
 	}
 
-	return hereusticHits >= hereusticThreshold
+	return hereusticHits >= heuristicThreshold
 }
 
-func FormatAutowatch(ctx context.Context, p *pipeline.Pipeline, hereusticThreshold int) {
+func FormatAutowatch(ctx context.Context, p *pipeline.Pipeline, heuristicThreshold int) {
 	var lastSeen []byte
 	for data := range clipboard.Watch(ctx, clipboard.FmtText) {
 		src := data.Bytes
@@ -45,7 +45,7 @@ func FormatAutowatch(ctx context.Context, p *pipeline.Pipeline, hereusticThresho
 		}
 
 		lastSeen = src
-		if hereustic(src, hereusticThreshold) {
+		if heuristic(src, heuristicThreshold) {
 			p.Submit(src)
 		}
 	}

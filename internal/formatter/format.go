@@ -3,6 +3,10 @@ package formatter
 import (
 	"errors"
 	"log"
+
+	"github.com/inflame-ue/pastiche/internal/formatter/gofmt"
+	"github.com/inflame-ue/pastiche/internal/formatter/pythonfmt"
+	"github.com/inflame-ue/pastiche/internal/formatter/rustfmt"
 )
 
 type Formatter interface {
@@ -12,16 +16,33 @@ type Formatter interface {
 
 type FormatterRegistry struct {
 	formatters []Formatter
+	lookup     map[string]Formatter
 }
 
 func NewFormatterRegistry() *FormatterRegistry {
-	return &FormatterRegistry{
+	reg := &FormatterRegistry{
 		formatters: []Formatter{},
+		lookup:     make(map[string]Formatter),
 	}
+	reg.Register(gofmt.NewGoFormatter())
+	reg.Register(pythonfmt.DefaultPythonFormatter)
+	reg.Register(rustfmt.DefaultRustFormatter)
+	return reg
 }
 
 func (fr *FormatterRegistry) Register(formatter Formatter) {
-	fr.formatters = append(fr.formatters, formatter)
+	fr.lookup[formatter.Name()] = formatter
+}
+
+func (fr *FormatterRegistry) Select(names []string) {
+	for _, name := range names {
+		formatter, ok := fr.lookup[name]
+		if !ok {
+			log.Print("no formatter with this name available")
+			continue
+		}
+		fr.formatters = append(fr.formatters, formatter)
+	}
 }
 
 func (fr *FormatterRegistry) Format(src []byte) ([]byte, error) {
