@@ -15,7 +15,7 @@ func hotkeyCode(s string) int {
 	return 0
 }
 
-func keyName(code int) string {
+func KeyName(code int) string {
 	if code >= 1 && code <= 26 {
 		return "Ctrl+" + string(rune('A'-1+code))
 	}
