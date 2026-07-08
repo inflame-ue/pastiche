@@ -161,7 +161,7 @@ func (m model) View() tea.View {
 		var inner strings.Builder
 		fmt.Fprintln(&inner, focus(1)+bold("Hotkey Binding"))
 		kn := "Press any key to set..."
-		if k := keyName(m.config.Hotkey.Key); k != "" {
+		if k := KeyName(m.config.Hotkey.Key); k != "" {
 			kn = k
 		}
 		fmt.Fprintf(&inner, "%s[ %s ]   Current: %s", indent, kn, kn)
