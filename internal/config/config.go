@@ -38,17 +38,17 @@ func getConfigPath() (string, error) {
 func NewDefaultConfig() *Config {
 	return &Config{
 		Trigger: struct {
-			Mode string "toml:\"mode\""
+			Mode string `toml:"mode"`
 		}{
 			Mode: "autowatch",
 		},
 		Heuristic: struct {
-			Value int "toml:\"value\""
+			Value int `toml:"value"`
 		}{
 			Value: 3,
 		},
 		Formatters: struct {
-			Order []string "toml:\"order\""
+			Order []string `toml:"order"`
 		}{
 			Order: []string{"go", "python", "rust"},
 		},
@@ -61,7 +61,7 @@ func Save(conf *Config) error {
 		return fmt.Errorf("getting config path: %w", err)
 	}
 
-	err = os.MkdirAll(filepath.Dir(confPath), 0600)
+	err = os.MkdirAll(filepath.Dir(confPath), 0755)
 	if err != nil {
 		return fmt.Errorf("creating conf directory: %w", err)
 	}

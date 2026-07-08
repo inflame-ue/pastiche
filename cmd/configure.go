@@ -1,8 +1,11 @@
 package cmd
 
 import (
-	"fmt"
+	"log"
 
+	tea "charm.land/bubbletea/v2"
+	"github.com/inflame-ue/pastiche/internal/config"
+	"github.com/inflame-ue/pastiche/internal/tui"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +18,15 @@ Walk through each setting: trigger mode, hotkey binding, heuristic
 sensitivity, and formatter order. Writes the config to
 ~/.config/pastiche/pastiche.toml.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("configure called")
+		config, err := config.Load()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		p := tea.NewProgram(tui.InitialModel(config))
+		if _, err := p.Run(); err != nil {
+			log.Fatal("the interface has encouneted an unrecoverable error: v", err)
+		}
 	},
 }
 
