@@ -14,7 +14,7 @@ Before running the daemon, install it. Make sure that your have a Go toolchain a
 go get github.com/inflame-ue/pastiche@latest
 ```
 
-You will then be able to configure the application and either run it in a blocking termainl window or install it as a user-level daemon:
+You will then be able to configure the application and either run it in a blocking terminal window or install it as a user-level daemon:
 
 ```sh
 # Configure the trigger, hotkey, etc
@@ -79,7 +79,26 @@ order = ["go", "python", "rust"]
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for development setup instructions.
+Adding a formatter for a new language is the most valuable contribution. See [CONTRIBUTING.MD](./CONTRIBUTING.MD) for how to setup the project for development.
+
+1. Create `internal/formatter/<name>/<name>.go`
+2. Implement the `Formatter` interface:
+
+```go
+type Formatter interface {
+		Name() string
+		Format(src []byte) ([]byte, error)
+}
+```
+
+`Name()` returns the language identifier used in config (e.g. `"json"`).
+`Format()` takes raw source and returns formatted source.
+
+3. Register it in `internal/formatter/format.go` — add the import and call `reg.Register(...)` in `NewFormatterRegistry()`.
+4. Add it to the default formatter order in `internal/config/config.go` if appropriate.
+5. Write a test. Look at `internal/formatter/gofmt/gofmt_test.go` for the pattern. Tests can optionally skip, if no formatter tool is available on the system.
+
+All other pull requests are welcom as well. If you want to propose a new feature, please open an issue first.
 
 
 
