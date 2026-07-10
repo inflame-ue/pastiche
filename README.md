@@ -2,6 +2,11 @@
 
 A clipboard code formatting daemon with a lovely extendable `Formatter` interface. Copy source code from a PDF file or agentic coding tool, hit your hotkey (or just copy and wait), and `pastiche` formats it in place — gofmt, black, rustfmt, or anything you plug in.
 
+<p>
+    <img src="demo/demo-go.gif" width="100%" alt="Pastiche Example">
+</p>
+
+
 ## Motivation
 
 I read a whole lotta programming books. Important information always goes into an Obsidian vault. Copying code from sources that do not preserve formatting has always been a hassle, though with code editors and IDEs nowadays providing automatic formatting and linting on save or hotkey press life became much easier. But the problem still exists, when there is no formatter available at hand's reach -- pressing tabs and spaces inside backticks gets painful really fast. This is why `pastiche` exists, to make sure that the code is formatted before it even hits the document. 
