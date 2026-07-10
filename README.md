@@ -79,7 +79,7 @@ order = ["go", "python", "rust"]
 
 ## Contributing
 
-Adding a formatter for a new language is the most valuable contribution. See [CONTRIBUTING.MD](./CONTRIBUTING.MD) for how to setup the project for development.
+Adding a formatter for a new language is the most valuable contribution. See [CONTRIBUTING.MD](./CONTRIBUTING.md) for how to setup the project for development.
 
 1. Create `internal/formatter/<name>/<name>.go`
 2. Implement the `Formatter` interface:
@@ -99,6 +99,3 @@ type Formatter interface {
 5. Write a test. Look at `internal/formatter/gofmt/gofmt_test.go` for the pattern. Tests can optionally skip, if no formatter tool is available on the system.
 
 All other pull requests are welcom as well. If you want to propose a new feature, please open an issue first.
-
-
-
