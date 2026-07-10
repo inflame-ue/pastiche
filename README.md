@@ -4,7 +4,7 @@ A clipboard code formatting daemon with a lovely extendable `Formatter` interfac
 
 ## Motivation
 
-I read a whole lotta programming books. Important information always goes into an Obsidian vault. Copying code from sources that do not preserve formatting has always been a hassle, though with code editors and IDEs nowaday1s providing automatic formatting and linting on save or hotkey press life became much easier. But the problem still exists, when there is no formatter available at hand's reach -- pressing tabs and spaces inside backticks gets painful really fast. This is why `pastiche` exists, to make sure that the code is formatted before it even hits the document. 
+I read a whole lotta programming books. Important information always goes into an Obsidian vault. Copying code from sources that do not preserve formatting has always been a hassle, though with code editors and IDEs nowadays providing automatic formatting and linting on save or hotkey press life became much easier. But the problem still exists, when there is no formatter available at hand's reach -- pressing tabs and spaces inside backticks gets painful really fast. This is why `pastiche` exists, to make sure that the code is formatted before it even hits the document. 
 
 ## Quick Start
 
