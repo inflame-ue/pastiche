@@ -18,12 +18,12 @@ Walk through each setting: trigger mode, hotkey binding, heuristic
 sensitivity, and formatter order. Writes the config to
 ~/.config/pastiche/pastiche.toml.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		config, err := config.Load()
+		cfg, err := config.Load()
 		if err != nil {
-			log.Fatal(err)
+			cfg = config.NewDefaultConfig()
 		}
 
-		p := tea.NewProgram(tui.InitialModel(config))
+		p := tea.NewProgram(tui.InitialModel(cfg))
 		if _, err := p.Run(); err != nil {
 			log.Fatal("the interface has encouneted an unrecoverable error: v", err)
 		}

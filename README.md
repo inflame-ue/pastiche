@@ -4,7 +4,7 @@ A clipboard code formatting daemon with a lovely extendable `Formatter` interfac
 
 ## Motivation
 
-We as programmers have to constantly improve our skills, and in my case that means reading a whole lotta books. Specifically reading books in PDF(yes, I am a rare connaisseur of eBooks) and then saving important information in the Obsidian vault that I maintain. And copying code from sources that do not preserve formatting has always been a hassle, though with code editors and IDEs nowadays providing automatic formatting and linting on save or hotkey press life became much easier. But the problem still exists, when there is no formatter available at hand's reach -- pressing tabs and spaces inside backtikcs gets painful really fast. This is why `pastiche` exists, to make sure that the code is formatted before it even hits the document. 
+I read a whole lotta programming books. Important information always goes into an Obsidian vault. Copying code from sources that do not preserve formatting has always been a hassle, though with code editors and IDEs nowaday1s providing automatic formatting and linting on save or hotkey press life became much easier. But the problem still exists, when there is no formatter available at hand's reach -- pressing tabs and spaces inside backticks gets painful really fast. This is why `pastiche` exists, to make sure that the code is formatted before it even hits the document. 
 
 ## Quick Start
 
@@ -37,8 +37,7 @@ pastiche install
 |---|---|
 | `autowatch` | Detects code in clipboard changes and formats automatically |
 | `hotkey`   | Waits for a keypress (e.g. Ctrl+I) to read clipboard and format |
-| `both`     | Autowatch in background + hotkey for man
-ual formatting |
+| `both`     | Autowatch in background + hotkey for manual formatting |
 
 ### Built-In Formatters
 
@@ -79,7 +78,7 @@ order = ["go", "python", "rust"]
 
 ## Contributing
 
-Adding a formatter for a new language is the most valuable contribution. See [CONTRIBUTING.MD](./CONTRIBUTING.md) for how to setup the project for development.
+Adding a formatter for a new language is the most valuable contribution. See [CONTRIBUTING.MD](./CONTRIBUTING.md) for how to set up the project for development.
 
 1. Create `internal/formatter/<name>/<name>.go`
 2. Implement the `Formatter` interface:
@@ -98,4 +97,4 @@ type Formatter interface {
 4. Add it to the default formatter order in `internal/config/config.go` if appropriate.
 5. Write a test. Look at `internal/formatter/gofmt/gofmt_test.go` for the pattern. Tests can optionally skip, if no formatter tool is available on the system.
 
-All other pull requests are welcom as well. If you want to propose a new feature, please open an issue first.
+All other pull requests are welcome as well. If you want to propose a new feature, please open an issue first.
