@@ -13,6 +13,36 @@ import (
 	"golang.design/x/clipboard"
 )
 
+// WantedBy is hardcoded to multi-user.target
+// For the user-level service to start on boot
+// default.target is needed
+const systemdScript = `[Unit]
+Description={{Description}}
+ConditionFileIsExecutable={{Path | cmdEscape}}
+{{range Dependencies}}{{.}}
+{{end}}
+[Service]
+StartLimitInterval=5
+StartLimitBurst=10
+ExecStart={{Path | cmdEscape}}{{range Arguments}} {{. | cmd}}{{end}}
+{{if ChRoot}}RootDirectory={{ChRoot | cmd}}
+{{end}}{{if WorkingDirectory}}WorkingDirectory={{WorkingDirectory | cmdEscape}}
+{{end}}{{if UserName}}User={{UserName}}
+{{end}}{{if ReloadSignal}}ExecReload=/bin/kill -{{ReloadSignal}} "$MAINPID"
+{{end}}{{if PIDFile}}PIDFile={{PIDFile | cmd}}
+{{end}}{{if OutputFileSupport}}StandardOutput=file:{{LogDirectory}}/{{Name}}.out
+StandardError=file:{{LogDirectory}}/{{Name}}.err
+{{end}}{{if LimitNOFILE}}LimitNOFILE={{LimitNOFILE}}
+{{end}}{{if Restart}}Restart={{Restart}}
+{{end}}{{if SuccessExitStatus}}SuccessExitStatus={{SuccessExitStatus}}
+{{end}}RestartSec=120
+EnvironmentFile=-/etc/sysconfig/{{Name}}
+
+{{range EnvVars}}{{.}}
+{{end}}[Install]
+WantedBy=default.target
+`
+
 type program struct {
 	config   *config.Config
 	registry *formatter.FormatterRegistry
@@ -64,10 +94,11 @@ func makeService() (service.Service, error) {
 		Name:        "pastiche",
 		DisplayName: "Pastiche",
 		Description: "Clipboard code formatter",
+
 		Option: service.KeyValue{
-			"UserService": true,
-			"RunAtLoad":   true,
-			"Restart":     "always", // this is the default, but set explicitly
+			"UserService":   true,
+			"RunAtLoad":     true,
+			"SystemdScript": systemdScript,
 		},
 	})
 }
