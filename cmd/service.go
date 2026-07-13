@@ -66,6 +66,8 @@ func makeService() (service.Service, error) {
 		Description: "Clipboard code formatter",
 		Option: service.KeyValue{
 			"UserService": true,
+			"RunAtLoad":   true,
+			"Restart":     "always", // this is the default, but set explicitly
 		},
 	})
 }
